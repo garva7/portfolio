@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@import "@fontsource-variable/outfit";
+
+/* ----------------------------------------------------------------------------
+   Design tokens. Dark, locked theme. One chromatic accent system anchored on a
+   near-black neutral base. "Chromatic" = the iridescent cyan -> violet -> rose
+   sweep, used only for glow/edge accents, never as flat fills.
+---------------------------------------------------------------------------- */
+@theme {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+  --font-display: "Outfit Variable", "Geist Variable", ui-sans-serif, sans-serif;
+
+  /* Neutral base (warm-cool charcoal, never pure black) */
+  --color-ink: #08080b;
+  --color-ink-2: #0c0c11;
+  --color-surface: #111118;
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-line-strong: rgba(255, 255, 255, 0.14);
+
+  --color-fg: #f2f2f5;
+  --color-fg-dim: #a0a0ad;
+  --color-fg-faint: #62626e;
+
+  /* Single locked accent: cool ice/steel. No purple, no pink. Used sparingly. */
+  --color-accent: #aac6d6;
+  --color-accent-bright: #d3e3ec;
+  --color-accent-deep: #6f8a99;
+
+  --radius-glass: 18px;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgba(170, 198, 214, 0.28);
+    color: #fff;
+  }
+
+  /* Honor reduced motion globally for CSS-driven motion. JS motion is gated in code. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Frosted glass panel: layered fill + inner edge refraction.
+     Solid fallback under reduced-transparency. */
+  .glass {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.06),
+        rgba(255, 255, 255, 0.015)
+      ),
+      rgba(17, 17, 24, 0.55);
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    border: 1px solid var(--color-line);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 24px 60px -28px rgba(0, 0, 0, 0.8);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .glass {
+      background: #14141c;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+  }
+
+  /* Chromatic edge: thin iridescent border via gradient-bleed mask */
+  .chroma-edge {
+    position: relative;
+  }
+  .chroma-edge::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      130deg,
+      rgba(211, 227, 236, 0.85),
+      rgba(170, 198, 214, 0.35) 45%,
+      rgba(111, 138, 153, 0.55)
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* Cool, near-monochrome highlight for accent words. No rainbow. */
+  .chroma-text {
+    background: linear-gradient(
+      100deg,
+      var(--color-accent-bright),
+      var(--color-accent) 55%,
+      #eef3f6
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
