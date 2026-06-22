@@ -85,7 +85,7 @@ export const freelance = {
   proof: {
     label: "Live build",
     name: "Waitomo Caves Lodge",
-    url: "https://waitomo-demo.netlify.app/",
+    url: "https://waitomo-lodge.netlify.app/",
   },
   cta: "Enquire now",
   enquirySubject: "Website enquiry",
