@@ -27,7 +27,7 @@ function ProjectPanel({
     >
       <div
         className={`relative shrink-0 overflow-hidden ${
-          stacked ? "h-48 sm:h-56" : "h-[44%]"
+          stacked ? "h-48 sm:h-56" : "h-[37%]"
         }`}
         style={p.imageFit === "contain" ? { background: p.imageBg } : undefined}
       >
@@ -55,24 +55,24 @@ function ProjectPanel({
         </span>
       </div>
 
-      <div className="flex flex-1 flex-col p-6 sm:p-7 md:p-9">
+      <div className="flex flex-1 flex-col p-6 sm:p-7 md:px-9 md:py-7">
         <h3 className="text-2xl font-medium tracking-tight sm:text-3xl md:text-4xl">
           {p.name}
         </h3>
-        <p className="mt-4 max-w-[52ch] text-[15px] leading-relaxed text-fg-dim">
+        <p className="mt-3.5 max-w-[52ch] text-[15px] leading-relaxed text-fg-dim">
           {p.blurb}
         </p>
 
         {p.metric && (
-          <div className="mt-6 flex items-baseline gap-3">
-            <span className="chroma-text font-mono text-3xl font-medium">
+          <div className="mt-4 flex items-baseline gap-3">
+            <span className="chroma-text font-mono text-2xl font-medium sm:text-[28px]">
               {p.metric.value}
             </span>
             <span className="text-sm text-fg-dim">{p.metric.label}</span>
           </div>
         )}
 
-        <ul className="mt-6 grid grid-cols-1 gap-x-6 gap-y-2.5 sm:grid-cols-2">
+        <ul className="mt-4 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-2">
           {p.highlights.map((h) => (
             <li key={h} className="flex items-start gap-2 text-sm text-fg-dim">
               <Circle
@@ -85,30 +85,32 @@ function ProjectPanel({
           ))}
         </ul>
 
-        <div className="mt-auto flex flex-wrap items-center gap-2 pt-8">
-          {p.stack.map((s) => (
-            <span
-              key={s}
-              className="rounded-full border border-line px-3 py-1 font-mono text-xs text-fg-dim"
-            >
-              {s}
-            </span>
-          ))}
-        </div>
+        <div className="mt-auto pt-6">
+          <div className="flex flex-wrap items-center gap-2">
+            {p.stack.map((s) => (
+              <span
+                key={s}
+                className="rounded-full border border-line px-3 py-1 font-mono text-xs text-fg-dim"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
 
-        {p.live && (
-          <a
-            href={p.live}
-            target="_blank"
-            rel="noreferrer"
-            className="group/cta mt-7 inline-flex w-fit items-center gap-2 rounded-full bg-white/5 py-2.5 pl-5 pr-2.5 text-sm font-medium text-fg ring-1 ring-line transition-colors hover:bg-white/10"
-          >
-            Visit live site
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/15 text-accent transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5">
-              <ArrowUpRight size={14} weight="bold" />
-            </span>
-          </a>
-        )}
+          {p.live && (
+            <a
+              href={p.live}
+              target="_blank"
+              rel="noreferrer"
+              className="group/cta mt-5 inline-flex w-fit items-center gap-2 rounded-full bg-white/5 py-2.5 pl-5 pr-2.5 text-sm font-medium text-fg ring-1 ring-line transition-colors hover:bg-white/10"
+            >
+              Visit live site
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/15 text-accent transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover/cta:translate-x-0.5 group-hover/cta:-translate-y-0.5">
+                <ArrowUpRight size={14} weight="bold" />
+              </span>
+            </a>
+          )}
+        </div>
       </div>
     </article>
   );
@@ -202,7 +204,7 @@ export default function Projects() {
       <div ref={track} className="flex h-[100dvh] items-center gap-7 px-6">
         {Header}
         {projects.map((p, i) => (
-          <div key={p.id} className="h-[80vh] py-2">
+          <div key={p.id} className="h-[84vh] py-2">
             <ProjectPanel p={p} index={i} />
           </div>
         ))}

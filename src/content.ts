@@ -55,7 +55,7 @@ export const projects: Project[] = [
       "JSON audio-feature caching",
     ],
     metric: { value: "83%", label: "lower response latency (30s+ to 4-6s)" },
-    live: "https://moodify-pbl.netlify.app",
+    live: "https://moodify-pbl.netlify.app/",
     image: "/moodify-logo.webp",
     imageFit: "contain",
     imageBg: "radial-gradient(circle at 50% 38%, #ffffff, #efe7f7 72%)",
