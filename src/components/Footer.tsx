@@ -30,7 +30,7 @@ export default function Footer() {
                 href={s.href}
                 target={s.href.startsWith("http") ? "_blank" : undefined}
                 rel="noreferrer"
-                className="group inline-flex items-center gap-2 text-sm text-fg-dim transition-colors hover:text-fg"
+                className="group inline-flex items-center gap-2 py-1.5 text-sm text-fg-dim transition-colors hover:text-fg"
               >
                 <span className="font-mono text-xs text-fg-faint">{s.label}</span>
                 <span className="h-px w-6 bg-line-strong transition-all group-hover:w-10 group-hover:bg-accent" />
@@ -42,6 +42,8 @@ export default function Footer() {
         <div className="mt-12 flex items-center justify-between border-t border-line pt-6">
           <p className="font-mono text-xs text-fg-faint">
             &copy; {year} {profile.name}
+            <span className="ml-3 text-line-strong">·</span>
+            <span className="ml-3">Updated June 2026</span>
           </p>
           <a
             href="#top"

@@ -1,9 +1,10 @@
-import { lazy, Suspense, useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { useReducedMotion } from "motion/react";
-import { ArrowDownRight, ArrowUpRight } from "@phosphor-icons/react";
+import { ArrowDownRight, ArrowUpRight, DownloadSimple } from "@phosphor-icons/react";
 import { profile } from "../content";
 import { useMagnetic } from "../hooks/useMagnetic";
+import { useTheme } from "../hooks/useTheme";
 
 const ChromaticScene = lazy(() => import("./ChromaticScene"));
 
@@ -11,8 +12,29 @@ const NAME_WORDS = profile.name.split(" ");
 
 export default function Hero() {
   const reduce = useReducedMotion();
+  const { theme } = useTheme();
   const root = useRef<HTMLElement>(null);
   const magnet = useMagnetic<HTMLAnchorElement>(0.5);
+
+  // Readability vignette: dark wash behind the light text in dark mode, light
+  // wash behind the dark text in light mode. Same shape, inverted base color.
+  const v = theme === "light" ? "251,251,253" : "8,8,11";
+
+  // Defer the heavy WebGL galaxy until the browser is idle. The opaque loader
+  // covers the hero for ~3.5s, so the scene is never visible during this gap —
+  // but deferring its init keeps the main thread free during the open
+  // animation, which is where the occasional jank came from. Nothing about the
+  // final look or motion changes; the galaxy is ready well before the reveal.
+  const [show3D, setShow3D] = useState(false);
+  useEffect(() => {
+    const ric = window.requestIdleCallback;
+    if (ric) {
+      const id = ric(() => setShow3D(true), { timeout: 800 });
+      return () => window.cancelIdleCallback?.(id);
+    }
+    const id = window.setTimeout(() => setShow3D(true), 400);
+    return () => window.clearTimeout(id);
+  }, []);
 
   useEffect(() => {
     if (reduce) return;
@@ -40,6 +62,17 @@ export default function Hero() {
       {/* 3D centerpiece: full-bleed particle field. Top/bottom edges feather into
           the background; a vignette keeps the text readable over it. */}
       <div aria-hidden className="absolute inset-0 z-0">
+        {/* Light mode only: a soft cool disc anchors the dark particles so the
+            galaxy reads as a designed element rather than dust on white. */}
+        {theme === "light" && (
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(42rem 32rem at 72% 40%, rgba(58,102,120,0.16), rgba(58,102,120,0.05) 45%, transparent 70%)",
+            }}
+          />
+        )}
         <div
           className="absolute inset-0"
           style={{
@@ -50,7 +83,7 @@ export default function Hero() {
           }}
         >
           <Suspense fallback={null}>
-            <ChromaticScene />
+            {show3D && <ChromaticScene theme={theme} />}
           </Suspense>
         </div>
         {/* readability vignette: dark behind the text (left) and below it (bottom) */}
@@ -58,8 +91,8 @@ export default function Hero() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(to right, rgba(8,8,11,0.94), rgba(8,8,11,0.5) 36%, transparent 66%)," +
-              "linear-gradient(to top, rgba(8,8,11,0.92), rgba(8,8,11,0.35) 30%, transparent 56%)",
+              `linear-gradient(to right, rgba(${v},0.94), rgba(${v},0.5) 36%, transparent 66%),` +
+              `linear-gradient(to top, rgba(${v},0.92), rgba(${v},0.35) 30%, transparent 56%)`,
           }}
         />
         {/* melt the bottom edge into the next section */}
@@ -74,7 +107,7 @@ export default function Hero() {
             {profile.role}
           </p>
 
-          <h1 className="font-display mt-6 text-[clamp(2.2rem,6vw,4.5rem)] font-semibold leading-[1] tracking-[-0.02em]">
+          <h1 className="font-display mt-6 text-[clamp(2.4rem,6.6vw,5rem)] font-extrabold leading-[0.92] tracking-[-0.035em]">
             {NAME_WORDS.map((word, i) => (
               <span key={word} className="block overflow-hidden pb-[0.06em]">
                 <span
@@ -114,6 +147,14 @@ export default function Hero() {
             >
               Get in touch
               <ArrowUpRight size={15} weight="bold" />
+            </a>
+            <a
+              href="/garv-arora-resume.pdf"
+              download="Garv-Arora-Resume.pdf"
+              className="inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium text-fg-dim transition-colors hover:text-fg active:scale-[0.97]"
+            >
+              Download CV
+              <DownloadSimple size={15} weight="bold" />
             </a>
           </div>
         </div>

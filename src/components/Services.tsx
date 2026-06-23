@@ -12,13 +12,16 @@ export default function Services() {
         {/* Outer shell of the double-bezel card */}
         <div className="rounded-[2rem] bg-white/[0.03] p-1.5 ring-1 ring-white/5">
           <div className="glass chroma-edge relative overflow-hidden rounded-[calc(2rem-0.375rem)]">
-            {/* ambient image + wash */}
-            <img
-              src={`https://picsum.photos/seed/${freelance.seed}/1600/900`}
-              alt=""
+            {/* ambient gradient mesh — a designed cool-steel wash instead of a
+                stock photo, tuned to sit under the glass in both themes */}
+            <div
               aria-hidden
-              loading="lazy"
-              className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-[0.12] mix-blend-luminosity"
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(48rem 34rem at 108% -20%, rgba(170,198,214,0.14), transparent 58%)," +
+                  "radial-gradient(42rem 36rem at -12% 120%, rgba(111,138,153,0.12), transparent 60%)",
+              }}
             />
             <div
               aria-hidden

@@ -33,7 +33,11 @@ export type Project = {
   highlights: string[];
   metric?: { value: string; label: string };
   live?: string;
-  seed: string;
+  image: string;
+  /* "cover" = full-bleed art (banners); "contain" = centered asset (logos) on
+     `imageBg`, which avoids cropping and gives the tile its own brand color. */
+  imageFit: "cover" | "contain";
+  imageBg?: string;
 };
 
 export const projects: Project[] = [
@@ -52,7 +56,9 @@ export const projects: Project[] = [
     ],
     metric: { value: "83%", label: "lower response latency (30s+ to 4-6s)" },
     live: "https://moodify-pbl.netlify.app",
-    seed: "moodify-music-aurora",
+    image: "/moodify-logo.webp",
+    imageFit: "contain",
+    imageBg: "radial-gradient(circle at 50% 38%, #ffffff, #efe7f7 72%)",
   },
   {
     id: "deadpixel",
@@ -67,7 +73,8 @@ export const projects: Project[] = [
       "Continuous endpoint health checks",
     ],
     live: "https://deadpixelpro.vercel.app",
-    seed: "deadpixel-decay-grid",
+    image: "/deadpixel-thumb.webp",
+    imageFit: "cover",
   },
 ];
 

@@ -4,21 +4,111 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#08080b" />
+    <!-- Apply saved theme before first paint (default dark) to avoid a flash. -->
+    <script>
+      try {
+        if (localStorage.getItem("theme") === "light") {
+          document.documentElement.classList.add("light");
+        }
+      } catch (e) {}
+    </script>
     <meta
       name="description"
       content="Garv Arora — full-stack and AI developer. Ships production AI and web apps, and builds sites for small premium service businesses."
     />
+    <link rel="canonical" href="https://garvarora.netlify.app/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://garvarora.netlify.app/" />
     <meta property="og:title" content="Garv Arora — Full-stack & AI Developer" />
     <meta
       property="og:description"
       content="CS student and developer who ships production AI and web apps."
     />
-    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://garvarora.netlify.app/garvarora-og-card.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Garv Arora — Full-stack & AI Developer" />
+    <meta property="og:site_name" content="Garv Arora" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Garv Arora — Full-stack & AI Developer" />
+    <meta
+      name="twitter:description"
+      content="CS student and developer who ships production AI and web apps."
+    />
+    <meta name="twitter:image" content="https://garvarora.netlify.app/garvarora-og-card.png" />
+
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%E2%97%88%3C/text%3E%3C/svg%3E" />
     <title>Garv Arora — Full-stack & AI Developer</title>
+
+    <!-- Structured data: AI crawlers don't run JS, so identity lives statically here -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "url": "https://garvarora.netlify.app/",
+        "dateModified": "2026-06-23",
+        "mainEntity": {
+          "@type": "Person",
+          "name": "Garv Arora",
+          "jobTitle": "Full-stack & AI Developer",
+          "description": "CS student and developer who ships production AI and web apps, and builds sites for small premium service businesses.",
+          "url": "https://garvarora.netlify.app/",
+          "image": "https://garvarora.netlify.app/garvarora-og-card.png",
+          "email": "garvarora426@gmail.com",
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "Manipal University Jaipur"
+          },
+          "knowsAbout": [
+            "Artificial Intelligence",
+            "Large Language Models",
+            "Full-stack Web Development",
+            "React",
+            "Python",
+            "Flask",
+            "Prompt Engineering"
+          ],
+          "sameAs": [
+            "https://github.com/garva7",
+            "https://linkedin.com/in/garvarora7"
+          ]
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <h1>Garv Arora — Full-stack &amp; AI Developer</h1>
+      <p>
+        Garv Arora is a full-stack and AI developer and Computer Science student
+        at Manipal University Jaipur. He ships production AI and web apps, and
+        builds websites for small premium service businesses.
+      </p>
+      <h2>Projects</h2>
+      <ul>
+        <li>
+          <strong>Moodify</strong> — an AI music recommender that turns a
+          plain-language mood into a tailored Spotify playlist, built with Groq
+          LLaMA 3, Flask, and React. Cut response latency ~83% (30s+ to 4–6s).
+          <a href="https://moodify-pbl.netlify.app">moodify-pbl.netlify.app</a>
+        </li>
+        <li>
+          <strong>DeadPixel</strong> — a real-time API health dashboard that
+          monitors endpoints and uses GPT-4 to auto-suggest fixes for broken
+          ones. <a href="https://deadpixelpro.vercel.app">deadpixelpro.vercel.app</a>
+        </li>
+      </ul>
+      <p>
+        Contact: <a href="mailto:garvarora426@gmail.com">garvarora426@gmail.com</a>
+        · <a href="https://github.com/garva7">GitHub</a>
+        · <a href="https://linkedin.com/in/garvarora7">LinkedIn</a>
+      </p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
