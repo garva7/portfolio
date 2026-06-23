@@ -8,21 +8,26 @@ const socials = [
   { label: "Email", href: `mailto:${profile.email}` },
 ];
 
-const BASE_COUNT = 1024;
-
 export default function Footer() {
   const year = 2026;
   const [visitorNum, setVisitorNum] = useState<number | null>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem("visitor_num");
-    if (stored) {
-      setVisitorNum(parseInt(stored, 10));
-    } else {
-      const num = BASE_COUNT + Math.floor(Math.random() * 800) + 1;
-      localStorage.setItem("visitor_num", String(num));
-      setVisitorNum(num);
+    const sessionKey = "visitor_counted";
+    const cached = sessionStorage.getItem(sessionKey);
+    if (cached) {
+      setVisitorNum(parseInt(cached, 10));
+      return;
     }
+    fetch("/api/visitor-count")
+      .then((r) => r.json())
+      .then(({ count }: { count: number | null }) => {
+        if (count !== null) {
+          setVisitorNum(count);
+          sessionStorage.setItem(sessionKey, String(count));
+        }
+      })
+      .catch(() => {});
   }, []);
 
   return (
