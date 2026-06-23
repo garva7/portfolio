@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { DownloadSimple } from "@phosphor-icons/react";
 import { profile } from "../content";
 import { useMagnetic } from "../hooks/useMagnetic";
+import ThemeToggle from "./ThemeToggle";
+import { useTheme } from "../hooks/useTheme";
 
 const links = [
   { label: "Work", href: "#work" },
@@ -12,6 +15,7 @@ const links = [
 
 export default function Navbar() {
   const reduce = useReducedMotion();
+  const { theme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
   const [active, setActive] = useState("#work");
@@ -133,12 +137,22 @@ export default function Navbar() {
 
           <div className="flex items-center gap-2">
             <a
+              href="/garv-arora-resume.pdf"
+              download="Garv-Arora-Resume.pdf"
+              className="hidden items-center gap-1.5 rounded-full px-4 py-2.5 text-[15px] font-medium text-fg-dim transition-colors hover:text-fg active:scale-[0.97] md:inline-flex"
+            >
+              <DownloadSimple size={15} weight="bold" />
+              CV
+            </a>
+            <a
               ref={cta}
               href="#contact"
               className="chroma-edge hidden rounded-full bg-white/5 px-5 py-2.5 text-[15px] font-medium text-fg transition-colors hover:bg-white/10 active:scale-[0.97] md:inline-flex"
             >
               Get in touch
             </a>
+
+            <ThemeToggle />
 
             {/* mobile hamburger -> X morph */}
             <button
@@ -173,17 +187,28 @@ export default function Navbar() {
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 z-[75] flex flex-col justify-center px-8 md:hidden"
             style={{
-              background: "rgba(8,8,11,0.82)",
+              background:
+                theme === "light"
+                  ? "rgba(251,251,253,0.85)"
+                  : "rgba(8,8,11,0.82)",
               backdropFilter: "blur(28px)",
               WebkitBackdropFilter: "blur(28px)",
             }}
           >
             <nav className="flex flex-col gap-2">
-              {[...links, { label: "Get in touch", href: "#contact" }].map(
-                (l, i) => (
+              {[
+                ...links,
+                { label: "Get in touch", href: "#contact" },
+                {
+                  label: "Download CV",
+                  href: "/garv-arora-resume.pdf",
+                  download: "Garv-Arora-Resume.pdf",
+                },
+              ].map((l, i) => (
                   <div key={l.href} className="overflow-hidden">
                     <motion.a
                       href={l.href}
+                      download={"download" in l ? l.download : undefined}
                       onClick={() => setOpen(false)}
                       initial={reduce ? false : { y: "110%" }}
                       animate={{ y: 0 }}

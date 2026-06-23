@@ -1,0 +1,18 @@
+# Garv Arora
+> Full-stack & AI developer and CS student at Manipal University Jaipur. Ships production AI and web apps, and builds websites for small premium service businesses.
+
+## Key facts
+- Name: Garv Arora
+- Role: Full-stack & AI Developer
+- Education: B.Tech Computer Science, Manipal University Jaipur (2nd year)
+- Focus: AI/LLM applications, full-stack web development, freelance web design
+- Contact: garvarora426@gmail.com
+
+## Projects
+- Moodify — AI music recommender: describe a mood in plain language, get a tailored Spotify playlist. Built with Groq LLaMA 3, Flask, React/Vite, and the Spotify Web API. Cut response latency ~83% (30s+ down to 4-6s). Live: https://moodify-pbl.netlify.app
+- DeadPixel — Real-time API health dashboard that monitors endpoints and uses GPT-4 to auto-suggest fixes for broken endpoints. Built with React and GPT-4. Live: https://deadpixelpro.vercel.app
+
+## Links
+- Portfolio: https://garvarora.netlify.app
+- GitHub: https://github.com/garva7
+- LinkedIn: https://linkedin.com/in/garvarora7

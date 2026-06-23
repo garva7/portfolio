@@ -3,7 +3,19 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { useReducedMotion } from "motion/react";
-import { AdditiveBlending, Color, type Points } from "three";
+import { AdditiveBlending, Color, NormalBlending, type Points } from "three";
+
+type Theme = "dark" | "light";
+
+/* Per-theme palette. On dark, bright ice points glow additively. On a light
+   background additive blending is invisible (adding light to white = nothing),
+   so light mode uses darker steel points drawn with normal blending. */
+const PALETTE = {
+  dark: { inside: "#e9f2f7", outside: "#6b8492", fog: "#08080b" },
+  // Deeper, more saturated steel so points read as a deliberate spiral on white
+  // instead of faint scattered dust. Rim kept dark enough to stay visible.
+  light: { inside: "#1f4a5a", outside: "#4f7280", fog: "#eef1f4" },
+} as const;
 
 /* Hero centerpiece: a glowing particle galaxy you can DRAG to orbit.
    - Spiral-arm point distribution, ice core fading to steel at the rim.
@@ -12,7 +24,7 @@ import { AdditiveBlending, Color, type Points } from "three";
    - Reduced motion freezes the auto-spin; mobile drops particle count and
      disables pointer capture so the page still scrolls. */
 
-function Galaxy({ lowPower }: { lowPower: boolean }) {
+function Galaxy({ lowPower, theme }: { lowPower: boolean; theme: Theme }) {
   const group = useRef<Points>(null);
   const reduce = useReducedMotion();
 
@@ -27,8 +39,8 @@ function Galaxy({ lowPower }: { lowPower: boolean }) {
     const positions = new Float32Array(COUNT * 3);
     const colors = new Float32Array(COUNT * 3);
 
-    const inside = new Color("#e9f2f7"); // ice core
-    const outside = new Color("#6b8492"); // steel rim
+    const inside = new Color(PALETTE[theme].inside); // core
+    const outside = new Color(PALETTE[theme].outside); // rim
     const mixed = new Color();
 
     for (let i = 0; i < COUNT; i++) {
@@ -55,7 +67,7 @@ function Galaxy({ lowPower }: { lowPower: boolean }) {
       colors[i3 + 2] = mixed.b;
     }
     return { positions, colors };
-  }, [COUNT]);
+  }, [COUNT, theme]);
 
   useFrame((_, delta) => {
     if (group.current && !reduce) {
@@ -70,19 +82,27 @@ function Galaxy({ lowPower }: { lowPower: boolean }) {
         <bufferAttribute attach="attributes-color" args={[colors, 3]} />
       </bufferGeometry>
       <pointsMaterial
-        size={lowPower ? 0.03 : 0.022}
+        size={
+          theme === "light"
+            ? lowPower
+              ? 0.036
+              : 0.028
+            : lowPower
+            ? 0.03
+            : 0.022
+        }
         sizeAttenuation
         vertexColors
         transparent
-        opacity={0.9}
+        opacity={theme === "light" ? 1 : 0.9}
         depthWrite={false}
-        blending={AdditiveBlending}
+        blending={theme === "light" ? NormalBlending : AdditiveBlending}
       />
     </points>
   );
 }
 
-export default function ChromaticScene() {
+export default function ChromaticScene({ theme = "dark" }: { theme?: Theme }) {
   const reduce = useReducedMotion();
   const lowPower = useMemo(
     () =>
@@ -99,8 +119,8 @@ export default function ChromaticScene() {
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       style={{ background: "transparent", pointerEvents: lowPower ? "none" : "auto" }}
     >
-      <fog attach="fog" args={["#08080b", 9, 18]} />
-      <Galaxy lowPower={lowPower} />
+      <fog attach="fog" args={[PALETTE[theme].fog, 9, 18]} />
+      <Galaxy lowPower={lowPower} theme={theme} />
 
       {/* Drag to orbit on desktop; mobile just auto-rotates so scroll passes through. */}
       {!lowPower && (
@@ -119,8 +139,8 @@ export default function ChromaticScene() {
 
       <EffectComposer>
         <Bloom
-          intensity={lowPower ? 0.7 : 1.15}
-          luminanceThreshold={0.05}
+          intensity={theme === "light" ? 0.25 : lowPower ? 0.7 : 1.15}
+          luminanceThreshold={theme === "light" ? 0.7 : 0.05}
           luminanceSmoothing={0.3}
           mipmapBlur
         />

@@ -2,7 +2,7 @@
 
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
-@import "@fontsource-variable/outfit";
+@import "@fontsource-variable/plus-jakarta-sans";
 
 /* ----------------------------------------------------------------------------
    Design tokens. Dark, locked theme. One chromatic accent system anchored on a
@@ -12,7 +12,7 @@
 @theme {
   --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
-  --font-display: "Outfit Variable", "Geist Variable", ui-sans-serif, sans-serif;
+  --font-display: "Plus Jakarta Sans Variable", "Geist Variable", ui-sans-serif, sans-serif;
 
   /* Neutral base (warm-cool charcoal, never pure black) */
   --color-ink: #08080b;
@@ -136,5 +136,205 @@
 
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   LIGHT THEME. Opt-in via `html.light` (set by the boot script in index.html
+   from localStorage; default is dark). Strategy: redefine the same semantic
+   tokens so token-based utilities flip for free, then hand-patch the handful
+   of literal white-alpha utilities and special effects that can't follow a
+   token. Dark mode is left completely untouched.
+   Rules are intentionally UNLAYERED so they win over Tailwind's utilities
+   layer without specificity gymnastics.
+---------------------------------------------------------------------------- */
+html.light {
+  color-scheme: light;
+
+  --color-ink: #fbfbfd;
+  --color-ink-2: #f3f4f7;
+  --color-surface: #ffffff;
+  --color-line: rgba(15, 18, 24, 0.1);
+  --color-line-strong: rgba(15, 18, 24, 0.16);
+
+  --color-fg: #16171d;
+  --color-fg-dim: #4d4f5a;
+  --color-fg-faint: #7d808c;
+
+  /* Darkened steel so accent text clears WCAG AA on white */
+  --color-accent: #3a6678;
+  --color-accent-bright: #244a5a;
+  --color-accent-deep: #6d8a98;
+}
+
+/* Elevated "white film" surfaces -> subtle black film on light */
+html.light .bg-white\/5 {
+  background-color: rgba(15, 18, 24, 0.05);
+}
+html.light .bg-white\/\[0\.02\] {
+  background-color: rgba(15, 18, 24, 0.025);
+}
+html.light .bg-white\/\[0\.03\] {
+  background-color: rgba(15, 18, 24, 0.035);
+}
+html.light .bg-white\/\[0\.015\] {
+  background-color: rgba(15, 18, 24, 0.02);
+}
+html.light .bg-white\/\[0\.09\] {
+  background-color: rgba(15, 18, 24, 0.07);
+}
+html.light .hover\:bg-white\/5:hover {
+  background-color: rgba(15, 18, 24, 0.05);
+}
+html.light .hover\:bg-white\/10:hover {
+  background-color: rgba(15, 18, 24, 0.08);
+}
+html.light .hover\:bg-white\/\[0\.03\]:hover {
+  background-color: rgba(15, 18, 24, 0.035);
+}
+html.light .ring-white\/5 {
+  --tw-ring-color: rgba(15, 18, 24, 0.06);
+}
+html.light .ring-white\/10 {
+  --tw-ring-color: rgba(15, 18, 24, 0.1);
+}
+
+/* Frosted glass: white panel on light */
+html.light .glass {
+  background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.75),
+      rgba(255, 255, 255, 0.4)
+    ),
+    rgba(255, 255, 255, 0.55);
+  border-color: rgba(15, 18, 24, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 24px 60px -30px rgba(20, 22, 30, 0.18);
+}
+@media (prefers-reduced-transparency: reduce) {
+  html.light .glass {
+    background: #ffffff;
+  }
+}
+
+/* Iridescent edge + accent text: darken so they read on white */
+html.light .chroma-edge::after {
+  background: linear-gradient(
+    130deg,
+    rgba(58, 102, 120, 0.5),
+    rgba(36, 74, 90, 0.25) 45%,
+    rgba(20, 50, 63, 0.45)
+  );
+  opacity: 0.7;
+}
+html.light .chroma-text {
+  background: linear-gradient(100deg, #244a5a, #3a6678 55%, #14323f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+html.light ::selection {
+  background: rgba(58, 102, 120, 0.22);
+  color: #0b1c24;
+}
+
+/* ----------------------------------------------------------------------------
+   Theme switch animation. The View Transitions API cross-fades the whole page
+   (including the WebGL canvas) old -> new; we just tune its timing here. A CSS
+   fallback (html.theme-anim, toggled briefly in JS) eases colors on browsers
+   without the API. Both are disabled under reduced motion.
+---------------------------------------------------------------------------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.32s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.theme-anim,
+html.theme-anim body,
+html.theme-anim *:not(canvas) {
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease, fill 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+  html.theme-anim,
+  html.theme-anim body,
+  html.theme-anim *:not(canvas) {
+    transition: none !important;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Pixel astronaut (PixelBuddy). Steel palette, theme-aware so it reads on both
+   the near-black and near-white backgrounds. Float idle, jetpack thrust + lean
+   while scrolling. Under reduced motion the global reset zeroes these keyframes.
+---------------------------------------------------------------------------- */
+:root {
+  --buddy-light: #d7e6ee;
+  --buddy-mid: #8499a5;
+  --buddy-dark: #3c4c56;
+  --buddy-visor: #16242c;
+  --buddy-glint: #f2f9fc;
+  --buddy-flame: #bfe0ee;
+}
+html.light {
+  --buddy-light: #3f6373;
+  --buddy-mid: #5d7d8b;
+  --buddy-dark: #24414c;
+  --buddy-visor: #11272f;
+  --buddy-glint: #bfe0ee;
+  --buddy-flame: #3a6678;
+}
+
+.pixel-buddy {
+  transition: transform 0.25s ease;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.35));
+}
+.pixel-buddy.is-moving[data-dir="1"] {
+  transform: rotate(7deg);
+}
+.pixel-buddy.is-moving[data-dir="-1"] {
+  transform: rotate(-7deg);
+}
+
+.pixel-buddy-bob {
+  animation: buddy-bob 3.2s ease-in-out infinite;
+}
+.pixel-buddy.is-moving .pixel-buddy-bob {
+  animation-duration: 1.1s;
+}
+@keyframes buddy-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.pixel-buddy-flame {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: top center;
+}
+.pixel-buddy.is-moving .pixel-buddy-flame {
+  opacity: 1;
+  animation: buddy-flame 0.16s steps(2, end) infinite;
+}
+@keyframes buddy-flame {
+  0% {
+    transform: scaleY(0.65);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scaleY(1.08);
+    opacity: 1;
   }
 }

@@ -26,20 +26,31 @@ function ProjectPanel({
       }`}
     >
       <div
-        className={`relative overflow-hidden ${stacked ? "h-48 sm:h-56" : "h-[44%]"}`}
+        className={`relative shrink-0 overflow-hidden ${
+          stacked ? "h-48 sm:h-56" : "h-[44%]"
+        }`}
+        style={p.imageFit === "contain" ? { background: p.imageBg } : undefined}
       >
         <img
-          src={`https://picsum.photos/seed/${p.seed}/1200/700`}
-          alt={`${p.name}, ${p.tag}`}
+          src={p.image}
+          alt={`${p.name} — ${p.tag}`}
           loading="lazy"
-          className="h-full w-full object-cover opacity-70 transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+          className={`h-full w-full transition-transform duration-700 ease-out group-hover:scale-[1.05] ${
+            p.imageFit === "contain"
+              ? "object-contain p-6 sm:p-7"
+              : "object-cover opacity-80"
+          }`}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent" />
-        <span className="absolute left-6 top-5 font-mono text-xs tracking-[0.3em] text-fg/80">
+        {p.imageFit === "cover" && (
+          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent" />
+        )}
+        {/* Badges sit in dark pills so they stay legible over any tile (a light
+            logo tile or a dark banner). */}
+        <span className="absolute left-5 top-5 rounded-full bg-ink/55 px-3 py-1 font-mono text-xs tracking-[0.28em] text-fg backdrop-blur-sm">
           {String(index + 1).padStart(2, "0")}
-          <span className="text-fg-faint"> / {TOTAL}</span>
+          <span className="text-fg/55"> / {TOTAL}</span>
         </span>
-        <span className="absolute right-5 top-5 rounded-full bg-ink/45 px-3 py-1 font-mono text-[11px] text-fg backdrop-blur-sm">
+        <span className="absolute right-5 top-5 rounded-full bg-ink/55 px-3 py-1 font-mono text-[11px] text-fg backdrop-blur-sm">
           {p.tag}
         </span>
       </div>

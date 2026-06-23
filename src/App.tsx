@@ -10,6 +10,7 @@ import Experience from "./components/Experience";
 import Services from "./components/Services";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import PixelBuddy from "./components/PixelBuddy";
 
 export default function App() {
   const [ready, setReady] = useState(false);
@@ -30,6 +31,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      <PixelBuddy />
     </div>
   );
 }
