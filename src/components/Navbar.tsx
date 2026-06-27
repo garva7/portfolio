@@ -80,7 +80,7 @@ export default function Navbar() {
       >
         <nav
           className={`flex h-16 w-full max-w-[1180px] items-center justify-between rounded-full pl-6 pr-3 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-            scrolled ? "glass" : "bg-white/[0.02] backdrop-blur-sm"
+            scrolled ? "glass" : "bg-white/[0.03] backdrop-blur-lg"
           }`}
         >
           <a
