@@ -66,7 +66,7 @@ export default function Services() {
                 </div>
               </div>
 
-              {/* offer list + proof */}
+              {/* offer list */}
               <div className="md:border-l md:border-line md:pl-10">
                 <ul className="flex flex-col gap-4">
                   {freelance.offers.map((o) => (
@@ -78,25 +78,6 @@ export default function Services() {
                     </li>
                   ))}
                 </ul>
-
-                <a
-                  href={freelance.proof.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group/proof mt-8 flex items-center justify-between gap-3 border-t border-line pt-6"
-                >
-                  <div>
-                    <div className="font-mono text-[11px] uppercase tracking-[0.24em] text-fg-faint">
-                      {freelance.proof.label}
-                    </div>
-                    <div className="mt-2 text-lg font-medium text-fg transition-colors group-hover/proof:text-accent">
-                      {freelance.proof.name}
-                    </div>
-                  </div>
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/5 text-accent ring-1 ring-line transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover/proof:translate-x-0.5 group-hover/proof:-translate-y-0.5">
-                    <ArrowUpRight size={16} weight="bold" />
-                  </span>
-                </a>
               </div>
             </div>
           </div>

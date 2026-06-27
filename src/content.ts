@@ -65,7 +65,7 @@ export const projects: Project[] = [
     name: "DeadPixel",
     tag: "Real-time API health dashboard",
     blurb:
-      "A real-time dashboard to monitor API health and auto-suggest fixes for broken endpoints using GPT-4.",
+      "A hackathon project: a real-time dashboard to monitor API health and auto-suggest fixes for broken endpoints using GPT-4.",
     stack: ["React", "GPT-4", "Real-time data", "Vercel"],
     highlights: [
       "Auto-refreshing interface for live system monitoring with minimal latency",
@@ -83,17 +83,12 @@ export const freelance = {
   eyebrow: "Work with me",
   headline: "Need a site that looks the part?",
   blurb:
-    "I design and build fast, modern websites for small premium service businesses, then ship them live. Recent build: Waitomo Caves Lodge, New Zealand.",
+    "I design and build fast, modern websites for small premium service businesses, then ship them live.",
   offers: [
     "Custom design, no templates",
     "Built and deployed end to end",
     "Fast, responsive, and easy to update",
   ],
-  proof: {
-    label: "Live build",
-    name: "Waitomo Caves Lodge",
-    url: "https://waitomo-lodge.netlify.app/",
-  },
   cta: "Enquire now",
   enquirySubject: "Website enquiry",
   enquiryBody:

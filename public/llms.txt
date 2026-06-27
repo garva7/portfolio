@@ -10,7 +10,7 @@
 
 ## Projects
 - Moodify — AI music recommender: describe a mood in plain language, get a tailored Spotify playlist. Built with Groq LLaMA 3, Flask, React/Vite, and the Spotify Web API. Cut response latency ~83% (30s+ down to 4-6s). Live: https://moodify-pbl.netlify.app
-- DeadPixel — Real-time API health dashboard that monitors endpoints and uses GPT-4 to auto-suggest fixes for broken endpoints. Built with React and GPT-4. Live: https://deadpixelpro.vercel.app
+- DeadPixel — Hackathon project: a real-time API health dashboard that monitors endpoints and uses GPT-4 to auto-suggest fixes for broken endpoints. Built with React and GPT-4. Live: https://deadpixelpro.vercel.app
 
 ## Links
 - Portfolio: https://garvarora.netlify.app
